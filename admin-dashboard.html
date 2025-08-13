@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panneau Admin - E-commerce</title>
+  <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Menu latéral -->
+    <aside class="sidebar">
+      <h2>Mon Admin</h2>
+      <nav>
+        <a href="#">🏠 Tableau de bord</a>
+        <a href="#">📦 Produits</a>
+        <a href="#">🛒 Commandes</a>
+        <a href="#">👥 Utilisateurs</a>
+        <a href="#">📊 Statistiques</a>
+        <a href="#" class="logout">🚪 Déconnexion</a>
+      </nav>
+    </aside>
+
+    <!-- Contenu principal -->
+    <main class="main-content">
+      <header>
+        <h1>Tableau de bord</h1>
+        <p>Bienvenue, Admin 👋</p>
+      </header>
+
+      <!-- Cartes d'infos -->
+      <section class="cards">
+        <div class="card">
+          <h3>Ventes aujourd'hui</h3>
+          <p>120 €</p>
+        </div>
+        <div class="card">
+          <h3>Commandes en attente</h3>
+          <p>8</p>
+        </div>
+        <div class="card">
+          <h3>Produits en stock</h3>
+          <p>152</p>
+        </div>
+      </section>
+
+      <!-- Tableau commandes -->
+      <section class="table-section">
+        <h2>Dernières commandes</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Client</th>
+              <th>Produit</th>
+              <th>Total</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>#1023</td>
+              <td>Jean Dupont</td>
+              <td>Chaussures</td>
+              <td>59 €</td>
+              <td><span class="status pending">En attente</span></td>
+            </tr>
+            <tr>
+              <td>#1022</td>
+              <td>Marie Claire</td>
+              <td>Sac à main</td>
+              <td>89 €</td>
+              <td><span class="status completed">Payé</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
