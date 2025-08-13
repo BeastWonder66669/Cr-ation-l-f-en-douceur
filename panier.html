@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mon Panier</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Votre panier</h1>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="panier.html">Panier (<span id="cart-count">0</span>)</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="cart-items"></div>
+    <p id="cart-total"></p>
+    <button id="clear-cart-btn">Vider le panier</button>
+    <button id="checkout-btn" onclick="location.href='commande.html'">Passer à la commande</button>
+  </main>
+
+  <script>
+    // Récupérer le panier depuis localStorage
+    let cart = JSON.parse(localStorage.getItem("monPanier")) || [];
+
+    const cartItemsContainer = document.getElementById("cart-items");
+    const cartTotal = document.getElementById("cart-total");
+    const cartCountSpan = document.getElementById("cart-count");
+    const clearBtn = document.getElementById("clear-cart-btn");
+
+    function updateCartDisplay() {
+      cartItemsContainer.innerHTML = "";
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartItemsContainer.innerHTML = "<p>Votre panier est vide.</p>";
+        cartTotal.textContent = "";
+        cartCountSpan.textContent = "0";
+        clearBtn.disabled = true;
+        return;
+      }
+
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const div = document.createElement("div");
+        div.className = "cart-item";
+        div.innerHTML = `
+          <span>${item.title}</span>
+          <input type="number" min="1" value="${item.quantity}" onchange="updateQuantity(${item.id}, this.value)" />
+          <span>${itemTotal.toFixed(2)}€</span>
+          <button onclick="removeFromCart(${item.id})">❌</button>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+
+      cartTotal.textContent = `Total : ${total.toFixed(2)}€`;
+      cartCountSpan.textContent = cart.reduce((acc, i) => acc + i.quantity, 0);
+      clearBtn.disabled = false;
+    }
+
+    function saveCart() {
+      localStorage.setItem("monPanier", JSON.stringify(cart));
+    }
+
+    function removeFromCart(id) {
+      cart = cart.filter(item => item.id !== id);
+      saveCart();
+      updateCartDisplay();
+    }
+
+    function updateQuantity(id, qty) {
+      const quantity = parseInt(qty);
+      if (isNaN(quantity) || quantity < 1) {
+        removeFromCart(id);
+      } else {
+        const item = cart.find(i => i.id === id);
+        if (item) {
+          item.quantity = quantity;
+          saveCart();
+          updateCartDisplay();
+        }
+      }
+    }
+
+    clearBtn.addEventListener("click", () => {
+      if (confirm("Voulez-vous vraiment vider le panier ?")) {
+        cart = [];
+        saveCart();
+        updateCartDisplay();
+      }
+    });
+
+    updateCartDisplay();
+  </script>
+</body>
+</html>
