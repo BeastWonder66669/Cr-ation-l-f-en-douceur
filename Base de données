@@ -1,0 +1,24 @@
+-- Table produits
+CREATE TABLE produits (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    prix DECIMAL(10,2) NOT NULL,
+    stock INT NOT NULL,
+    image VARCHAR(255) DEFAULT NULL
+);
+
+-- Table commandes
+CREATE TABLE commandes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    client VARCHAR(255) NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    statut ENUM('En attente','Payé','Annulé') DEFAULT 'En attente',
+    date_commande TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table utilisateurs
+CREATE TABLE utilisateurs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    role ENUM('Client','Admin') DEFAULT 'Client'
+);
