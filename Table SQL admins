@@ -1,0 +1,12 @@
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Exemple d'admin avec mot de passe haché
+INSERT INTO admins (email, password) VALUES (
+    'christophercg.pro@gmail.com',
+    '22Beast22.'
+);
+-- Mot de passe = admin123
