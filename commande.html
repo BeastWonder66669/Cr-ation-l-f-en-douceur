@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmation de commande</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+
+  <header>
+    <h1>Confirmation de commande</h1>
+  </header>
+
+  <main id="order-summary">
+    <h2>Résumé de votre commande :</h2>
+    <div id="order-items"></div>
+    <p id="order-total"></p>
+    <button id="download-pdf-btn">📄 Télécharger la facture</button>
+    <button id="confirm-order-btn">✅ Confirmer l’achat</button>
+
+    <!-- Conteneur du bouton PayPal -->
+    <div id="paypal-button-container" style="margin-top: 20px;"></div>
+  </main>
+
+  <!-- Remplace TON_CLIENT_ID par ton vrai Client ID PayPal -->
+  <script src="https://www.paypal.com/sdk/js?client-id=ATtMob-WO_1NYqyiX4QNEV79shU7jYjfjyA3BZtpM9cnFAnKYU9SAoRh5I4f_yrIDcxpJJHsiWmn49go&currency=CAD"></script>
+
+  <script>
+    const cart = JSON.parse(localStorage.getItem('monPanier')) || [];
+
+    const orderItemsContainer = document.getElementById('order-items');
+    const orderTotal = document.getElementById('order-total');
+    const confirmBtn = document.getElementById('confirm-order-btn');
+    const downloadBtn = document.getElementById('download-pdf-btn');
+
+    let total = 0;
+    let invoiceText = "Facture:\n\n";
+
+    if (cart.length === 0) {
+      orderItemsContainer.innerHTML = "<p>Votre panier est vide.</p>";
+      confirmBtn.style.display = "none";
+      downloadBtn.style.display = "none";
+    } else {
+      cart.forEach(item => {
+        const itemTotal = item.price * item.quantity;
+        total += itemTotal;
+
+        const el = document.createElement('p');
+        el.textContent = `${item.title} (x${item.quantity}) - ${itemTotal.toFixed(2)}€`;
+        orderItemsContainer.appendChild(el);
+
+        invoiceText += `${item.title} (x${item.quantity}) - ${itemTotal.toFixed(2)}€\n`;
+      });
+
+      orderTotal.textContent = `Total à payer : ${total.toFixed(2)}€`;
+      invoiceText += `\nTotal : ${total.toFixed(2)}€`;
+    }
+
+    confirmBtn.addEventListener('click', () => {
+      alert("🎉 Merci pour votre commande !");
+      localStorage.removeItem('monPanier');
+      window.location.href = "index.html";
+    });
+
+    downloadBtn.addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(invoiceText, 10, 10);
+      doc.save("facture.pdf");
+    });
+
+    // === Intégration PayPal ===
+    paypal.Buttons({
+      createOrder: function(data, actions) {
+        return actions.order.create({
+          purchase_units: [{
+            amount: {
+              value: total.toFixed(2)  // Montant total
+            }
+          }]
+        });
+      },
+      onApprove: function(data, actions) {
+        return actions.order.capture().then(function(details) {
+          alert('Paiement effectué par ' + details.payer.name.given_name + ' ! Merci !');
+          localStorage.removeItem('monPanier'); // Vide le panier
+          window.location.href = "index.html";  // Retour accueil
+        });
+      }
+    }).render('#paypal-button-container');
+  </script>
+
+</body>
+</html>

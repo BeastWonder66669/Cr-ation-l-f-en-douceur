@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boutique en ligne</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Ma Boutique</h1>
+    <nav>
+      <a href="#">Accueil</a>
+      <a href="#">Produits</a>
+      <a href="#">Contact</a>
+      <span id="cart-count">🛒 0 article</span>
+    </nav>
+  </header>
+
+  <main id="product-container">
+    <!-- Produits injectés ici -->
+  </main>
+
+  <section id="cart-section">
+    <h2>Mon Panier</h2>
+    <div id="cart-items"></div>
+    <p id="cart-total">Total : 0.00€</p>
+    <button id="clear-cart-btn">🗑️ Vider le panier</button>
+    <a href="commande.html"><button id="checkout-btn">🛒 Passer à la commande</button></a>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Ma Boutique</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
